@@ -4,24 +4,19 @@ package com.cpp255.views;
 import com.example.android_cpp255_views.R;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.GestureDetector.OnGestureListener;
 import android.view.Menu;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 
-public class MainActivity extends Activity 
+public class MainActivity extends BaseActivity 
 	implements OnClickListener{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		findViewById(R.id.back_bt).setOnClickListener(this);
+		getWindow().setContentView(R.layout.activity_main);
+		getWindow().findViewById(R.id.back_bt).setOnClickListener(this);
 	}
 
 	@Override
@@ -39,5 +34,11 @@ public class MainActivity extends Activity
 			startActivity(intent);
 			break;
 		}
+	}
+
+	@Override
+	public void openNewActivity() {
+		Intent intent = new Intent(MainActivity.this, Test2Activity.class);
+		startActivity(intent);
 	}
 }

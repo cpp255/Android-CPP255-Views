@@ -15,19 +15,18 @@
  *******************************************************************************/
 package com.cpp255.views;
 
-import com.example.android_cpp255_views.R;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.GestureDetector.OnGestureListener;
 
-public class BaseActivity extends Activity implements OnGestureListener{
+public abstract class BaseActivity extends AnimationActivity implements OnGestureListener{
 	private static final float VELOCITY_X = 50.0f;
 	private GestureDetector mDetector;
 	private int mFlingWidth;
-	@Override public void onCreate(Bundle saveInstanceState){
+	@Override
+	protected void onCreate(Bundle saveInstanceState){
 		super.onCreate(saveInstanceState);
 		mFlingWidth = this.getWindowManager().getDefaultDisplay().getWidth() / 5;
 		mDetector = new GestureDetector(this);
@@ -38,12 +37,6 @@ public class BaseActivity extends Activity implements OnGestureListener{
 		return mDetector.onTouchEvent(event);
 	}
 
-	@Override public void onBackPressed() {
-		super.onBackPressed();	
-		overridePendingTransition(R.anim.slide_in_left
-				, R.anim.slide_out_right);
-	}
-	
 	@Override
 	public boolean onDown(MotionEvent e) {
 		// TODO Auto-generated method stub
@@ -53,12 +46,21 @@ public class BaseActivity extends Activity implements OnGestureListener{
 	@Override
 	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 			float velocityY) {
-		if(e2.getX() - e1.getX() > mFlingWidth
-				&& Math.abs(velocityX) > VELOCITY_X) {
-			finish();
-			overridePendingTransition(R.anim.slide_in_left
-					, R.anim.slide_out_right);
-		}
+		float xFrom = e1.getX();
+		float xTo = e2.getX();
+		float yFrom = e1.getY();
+		float yTo = e2.getY();
+		
+		if(Math.abs(xFrom - xTo) > mFlingWidth && Math.abs(velocityX) > VELOCITY_X) {
+			if(Math.abs(xFrom - xTo) >= Math.abs(yFrom - yTo)) {
+				if(xFrom < xTo) {
+					finish();
+				} else {
+					openNewActivity();
+				}
+				return true;
+			} 
+		} 		
 		return false;
 	}
 
@@ -87,4 +89,9 @@ public class BaseActivity extends Activity implements OnGestureListener{
 		return false;
 	}
 	
+	/**
+	 *   向左滑动，打开新的activity
+	 */
+	public abstract void openNewActivity();
+
 }

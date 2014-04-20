@@ -10,4 +10,9 @@ public class Test2Activity extends BaseActivity {
 		super.onCreate(saveInstanceState);
 		setContentView(R.layout.activity_test2);
 	}
+
+	@Override
+	public void openNewActivity() {
+		
+	}
 }
